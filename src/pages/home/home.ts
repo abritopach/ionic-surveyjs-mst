@@ -4,10 +4,6 @@ import { NavController, LoadingController, AlertController } from 'ionic-angular
 import { SurveyProvider } from '../../providers/survey/survey';
 import { SurveyDetailsPage } from '../survey-details/survey-details';
 
-import { SurveyModel } from "../../models/survey.model";
-
-import { ApiWrapper } from '../../providers/survey/api-wrapper';
-
 import { SurveyList } from '../../models/survey.mst.model';
 
 @Component({
@@ -22,19 +18,7 @@ export class HomePage {
 
 
     constructor(public navCtrl: NavController, public surveyProvider: SurveyProvider,
-                public loadingCtrl: LoadingController, public alertCtrl: AlertController, public apiWrapper: ApiWrapper) {
-
-        // TO TEST API WRAPPER UNCOMMENT THIS CODE. 
-        /*
-        this.apiWrapper.api.surveys.get('getActive', { accessKey: true, ownerId: true }).subscribe(
-            data => {
-                console.log(data);
-            },
-            error => {
-                console.log(<any>error);
-            }
-        );
-        */
+                public loadingCtrl: LoadingController, public alertCtrl: AlertController) {
 
         let loading = this.loadingCtrl.create({
             content: "Loading Surveys..."
@@ -53,9 +37,11 @@ export class HomePage {
 
     selectedSurvey(survey) {
         //console.log(survey);
+        /*
         this.navCtrl.push(SurveyDetailsPage, {
             survey: survey
         });
+        */
     }
 
     onClickCreateSurvey() {
@@ -80,32 +66,6 @@ export class HomePage {
     onClickDeleteSurvey(survey, type) {
         console.log("onClickDeleteSurvey", survey);
         this.presentAlert(survey, 'delete');
-    }
-
-    deleteSurvey(survey) {
-        /*
-        let loading = this.loadingCtrl.create({
-            content: "Deleting Survey..."
-        });
-
-        loading.present();
-
-        this.surveyProvider.deleteSurvey(survey.Id)
-        .subscribe(
-            data => {
-                console.log(data);
-                loading.dismiss();
-            },
-            error => {
-                console.log(<any>error);
-                if (error.status == 200) {
-                    if ( survey.IsArchived === false) this.surveys = this.removeElement(survey.Id, this.surveys);
-                    else this.archiveSurveys = this.removeElement(survey.Id, this.archiveSurveys);
-                }
-                loading.dismiss();
-            }
-        );
-        */
     }
 
     presentAlert(survey, operation) {
@@ -147,14 +107,11 @@ export class HomePage {
             {
               text: 'Cancel',
               handler: data => {
-                //console.log('Cancel clicked');
               }
             },
             {
               text: 'Accept',
               handler: data => {
-                //console.log('Accept clicked');
-                //console.log(data);
                 this.changeSurveyName(survey, data.name);
               }
             }
@@ -164,6 +121,7 @@ export class HomePage {
       }
 
     changeSurveyName(survey, newName) {
+        /*
         let loading = this.loadingCtrl.create({
             content: "Updating Survey name..."
         });
@@ -182,82 +140,23 @@ export class HomePage {
                 loading.dismiss();
             }
         );
+        */
     }
 
     createSurvey(name) {
-        let loading = this.loadingCtrl.create({
-            content: "Creating Survey..."
-        });
+        this.surveys.create(name);
+    }
 
-        loading.present();
-
-        /*
-        this.surveyProvider.createSurvey(name)
-        .subscribe(
-            data => {
-                //console.log(data);
-                let survey: SurveyModel = new SurveyModel(data);
-                this.surveys.unshift(survey);
-                loading.dismiss();
-            },
-            error => {
-                console.log(<any>error);
-                loading.dismiss();
-            }
-        );*/
-        this.surveys.add(name);
+    deleteSurvey(survey) {
+        this.surveys.delete(survey);
     }
 
     activateSurvey(survey) {
-        /*
-        let loading = this.loadingCtrl.create({
-            content: "Activating Survey..."
-        });
-
-        loading.present();
-
-        this.surveyProvider.restoreSurvey(survey.Id)
-        .subscribe(
-            data => {
-                console.log(data);
-                loading.dismiss();
-            },
-            error => {
-                console.log(<any>error);
-                if (error.status == 200) {
-                    this.surveys.push(survey);
-                    this.archiveSurveys = this.removeElement(survey.Id, this.archiveSurveys);
-                }
-                loading.dismiss();
-            }
-        );
-        */
+        this.surveys.activateSurvey(survey);
     }
 
     archiveSurvey(survey) {
-        /*
-        let loading = this.loadingCtrl.create({
-            content: "Archiving Survey..."
-        });
-
-        loading.present();
-
-        this.surveyProvider.archiveSurvey(survey.Id)
-        .subscribe(
-            data => {
-                console.log(data);
-                loading.dismiss();
-            },
-            error => {
-                console.log(<any>error);
-                if (error.status == 200) {
-                    this.archiveSurveys.push(survey);
-                    this.surveys = this.removeElement(survey.Id, this.surveys);
-                }
-                loading.dismiss();
-            }
-        );
-        */
+        this.surveys.archiveSurvey(survey);
     }
 
     removeElement(surveyId, surveys) {
