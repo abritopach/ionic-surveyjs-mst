@@ -1,0 +1,33 @@
+<!--
+  Generated template for the SurveyDetailsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+    <ion-navbar color="primary">
+        <ion-title>Survey Details</ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+	<ion-fab top right edge>
+        <button ion-fab mini (click)="getSurveyResults()" color="danger"><ion-icon name="list-box"></ion-icon></button>
+    </ion-fab>
+    <survey [survey]="survey"></survey>
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar color="primary">
+        <ion-title>© {{ currentYear }} Adrián Brito Pacheco</ion-title>
+        <!--
+        <ion-buttons end>
+            <a class="github-button" href="https://github.com/abritopach/ionic-surveyjs" data-icon="octicon-star" aria-label="Star abritopach/ionic-surveyjs on GitHub">Star</a>
+            <a class="github-button" href="https://github.com/abritopach" aria-label="Follow @abritopach on GitHub">GitHub</a>
+        </ion-buttons>
+    -->
+    </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,77 @@
+<ion-header>
+    <ion-navbar color="primary">
+        <ion-title>
+            Ionic & SurveyJS & Mobx-State-Tree
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-fab top right edge>
+        <button ion-fab mini color="danger" (click)="onClickCreateSurvey()"><ion-icon name="add"></ion-icon></button>
+    </ion-fab>
+    <h5>Active surveys</h5>
+    <ion-list>
+        <ion-item-sliding *ngFor="let survey of surveys.activeSurveys; let i = index">
+            <ion-item tappable (click)="selectedSurvey(survey)">
+                <ion-thumbnail item-start>
+                    <img [src]="survey.Image">
+                </ion-thumbnail>
+                <h2>{{survey.Name}}</h2>
+                <p><ion-icon name="stopwatch"></ion-icon> {{survey.CreatedAt | date: 'dd/MM/yyyy H:mm'}}</p>
+                <!--<button ion-button clear item-end>View</button>-->
+            </ion-item>
+            <ion-item-options side="right">
+                <button ion-button color="primary" (click)="onClickArchiveSurvey(survey)">
+                    <ion-icon name="lock"></ion-icon>
+                    Archive
+                </button>
+                <button ion-button color="secondary" (click)="onClickEditSurvey(survey)">
+                    <ion-icon name="create"></ion-icon>
+                    Edit
+                </button>
+                <button ion-button color="danger" (click)="onClickDeleteSurvey(survey)">
+                    <ion-icon name="trash"></ion-icon>
+                    Delete
+                </button>
+            </ion-item-options>
+        </ion-item-sliding>
+    </ion-list>
+    <h5>Archives surveys</h5>
+    <ion-list>
+        <ion-item-sliding *ngFor="let survey of surveys.archiveSurveys; let i = index">
+            <ion-item tappable (click)="selectedSurvey(survey)">
+                <ion-thumbnail item-start>
+                    <img [src]="survey.Image">
+                </ion-thumbnail>
+                <h2>{{survey.Name}}</h2>
+                <p>{{survey.CreatedAt | date: 'dd/MM/yyyy H:mm'}}</p>
+            </ion-item>
+            <ion-item-options side="right">
+                <button ion-button color="primary" (click)="onClickActivateSurvey(survey)">
+                    <ion-icon name="unlock"></ion-icon>
+                    Activate
+                </button>
+                <button ion-button color="secondary" (click)="onClickEditSurvey(survey)">
+                    <ion-icon name="create"></ion-icon>
+                    Edit
+                </button>
+                <button ion-button color="danger" (click)="onClickDeleteSurvey(survey)">
+                    <ion-icon name="trash"></ion-icon>
+                    Delete
+                </button>
+            </ion-item-options>
+        </ion-item-sliding>
+    </ion-list>
+    <p class="error-message" *ngIf="noSurveys">Could not fetch surveys. Make sure you are connected to the Internet or try again later.</p>
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar color="primary">
+        <ion-title>© {{ currentYear }} Adrián Brito Pacheco</ion-title>
+        <ion-buttons end>
+            <a class="github-button" href="https://github.com/abritopach/ionic-surveyjs" data-icon="octicon-star" aria-label="Star abritopach/ionic-surveyjs on GitHub">Star</a>
+            <a class="github-button" href="https://github.com/abritopach" aria-label="Follow @abritopach on GitHub">GitHub</a>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-footer>
