@@ -1,6 +1,8 @@
-# Ionic-SurveyJS
+# Ionic-SurveyJS-MST
 
-Sample project that shows how to integrate SurveyJS in Ionic APP.
+Sample project that shows how to integrate SurveyJS in Ionic APP and how to manage application state with Mobx-state-tree.
+
+Technologies: Mobx-state-tree, Mobx, Mobx-angular, Typescript, Ionic.
 
 This project shows you how to:
 
@@ -21,10 +23,6 @@ This project shows you how to:
     * Download survey resulst CSV in Desktop.
 
 ![App example](readme_resources/app.gif "App example")
-
-## Demo
-
-[Demo online](https://ionic-surveyjs.herokuapp.com/)
 
 ## Configuration
 

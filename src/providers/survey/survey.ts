@@ -75,7 +75,7 @@ export class SurveyProvider {
     // Delete a survey by it's id. You will not be able to restore this survey. The survey results become inaccessible.
     deleteSurvey(idSurvey: any): Observable<any> {
         return this.http.get('https://dxsurvey.com/api/MySurveys/delete/' + idSurvey + '?accessKey=' + this.accessKey).pipe(
-            timeoutWith(5000, Observable.throw(new Error('Failed to delete survey.')))
+            timeoutWith(10000, Observable.throw(new Error('Failed to delete survey.')))
         );
     }
 

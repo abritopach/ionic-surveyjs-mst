@@ -44,31 +44,15 @@ export class HomePage {
         */
     }
 
-    onClickCreateSurvey() {
-        this.presentAlert(null, 'create');
-    }
-
-    onClickActivateSurvey(survey) {
-        console.log("onClickActivateSurvey", survey);
-        this.presentAlert(survey, 'activate');
-    }
-
-    onClickArchiveSurvey(survey) {
-        console.log("onClickArchiveSurvey", survey);
-        this.presentAlert(survey, 'archive');
-    }
-
     onClickEditSurvey(survey) {
         console.log("onClickEditSurvey", survey);
         this.showPrompt(survey);
     }
 
-    onClickDeleteSurvey(survey, type) {
-        console.log("onClickDeleteSurvey", survey);
-        this.presentAlert(survey, 'delete');
-    }
-
-    presentAlert(survey, operation) {
+    presentAlert({
+        survey,
+        operation, 
+      }) {
         let options = this.alertConfig(operation);
         let alert = this.alertCtrl.create({
           title: options.title,
@@ -157,12 +141,6 @@ export class HomePage {
 
     archiveSurvey(survey) {
         this.surveys.archiveSurvey(survey);
-    }
-
-    removeElement(surveyId, surveys) {
-        return surveys.filter(function(e) {
-            return e.Id !== surveyId;
-        });
     }
 
     alertConfig(operation) {
