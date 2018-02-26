@@ -7,6 +7,8 @@ import { ChartsModalPage } from '../../modals/charts-modal';
 
 import { SurveyResultsModel } from '../../models/survey.results.model';
 
+import { SurveyListResults } from '../../models/survey.results.mst.model';
+
 import * as papa from 'papaparse';
 
 /**
@@ -33,6 +35,8 @@ export class SurveyResultsPage {
 	surveyResults: SurveyResultsModel[] = [];
 	publicSurveyURL: string = 'https://surveyjs.io/Results/Survey/';
 
+	surveyResultsMobx : any = [];
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public surveyProvider: SurveyProvider,
 			  public loadingCtrl: LoadingController, public modalCtrl: ModalController, public alertCtrl: AlertController) {
 
@@ -53,6 +57,7 @@ export class SurveyResultsPage {
 			data => {
 				this.results = JSON.parse(JSON.stringify(data.Data));
 				this.surveyResults = SurveyResultsModel.fromJSONArray(data.Data);
+				console.log(this.surveyResults);
 				if (this.results.length > 0) {
 					this.keys = this.surveyResults[0].userAnswers.map((val, key) => {return val['textQuestion']});
 					// Format Data to chart visualization.
@@ -65,6 +70,14 @@ export class SurveyResultsPage {
 				loading.dismiss();
 			}
 		);
+
+		this.surveyResultsMobx = SurveyListResults.create({
+			results: []
+        }, {
+            surveyProvider: this.surveyProvider // inject provider to the tree.
+        });
+
+        this.surveyResultsMobx.getSurveyResults(this.survey);
   }
 
   	ionViewDidLoad() {

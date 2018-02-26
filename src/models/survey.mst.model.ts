@@ -30,6 +30,9 @@ export const Survey = types.model({
         // console.log('afterCreate Survey');
         if (self.Image == '') self.Image = defaultImages[Math.floor(Math.random() * 4)];
     },
+    changeName(newName) {
+        self.Name = newName;
+    },
     remove() {
         getParent(self, 2).remove(self);
     }
@@ -147,6 +150,24 @@ export const SurveyList = types.model({
                     (survey as any).remove();
                     (self as any).addArchive(copy);
                 }
+                loading.dismiss();
+            }
+        );
+    },
+    changeName(survey, newName) {
+        const loading = presentLoading(self, 'Updating Survey name...');
+        getEnv(self).surveyProvider.changeSurveyName(survey.Id, newName)
+        .subscribe(
+            data => {
+                console.log(data);
+                loading.dismiss();
+                (survey as any).changeName(newName);
+                // Close sliding item.
+                survey.close();
+            },
+            error => {
+                console.log(<any>error);
+                if (error.status == 200) (survey as any).changeName(newName);;
                 loading.dismiss();
             }
         );

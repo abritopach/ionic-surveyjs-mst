@@ -33,12 +33,10 @@ export class HomePage {
     }
 
     selectedSurvey(survey) {
-        //console.log(survey);
-        /*
+        console.log(survey);
         this.navCtrl.push(SurveyDetailsPage, {
             survey: survey
         });
-        */
     }
 
     onClickEditSurvey(survey) {
@@ -101,31 +99,12 @@ export class HomePage {
         prompt.present();
       }
 
-    changeSurveyName(survey, newName) {
-        /*
-        let loading = this.loadingCtrl.create({
-            content: "Updating Survey name..."
-        });
-
-        loading.present();
-
-        this.surveyProvider.changeSurveyName(survey.Id, newName)
-        .subscribe(
-            data => {
-                console.log(data);
-                loading.dismiss();
-            },
-            error => {
-                console.log(<any>error);
-                if (error.status == 200) survey.Name = newName;
-                loading.dismiss();
-            }
-        );
-        */
-    }
-
     createSurvey(name) {
         this.surveys.create(name);
+    }
+
+    changeSurveyName(survey, newName) {
+        this.surveys.changeName(survey, newName);
     }
 
     deleteSurvey(survey) {
