@@ -2,7 +2,7 @@
 
 Sample project that shows how to integrate SurveyJS in Ionic APP and how to manage application state with Mobx-state-tree.
 
-Technologies: Mobx-state-tree, Mobx, Mobx-angular, Typescript, Ionic.
+Technologies: Mobx-state-tree, Mobx, Mobx-angular, SurveyJS, Typescript, Ionic.
 
 This project shows you how to:
 

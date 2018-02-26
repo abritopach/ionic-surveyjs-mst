@@ -27,30 +27,6 @@ export class SurveyProvider {
         //console.log('Hello SurveyProvider Provider');
     }
 
-    testProgressRequest() {
-        const req = new HttpRequest('GET', 'https://jsonplaceholder.typicode.com/photos', {
-            reportProgress: true,
-          });
-        this.http.request(req).subscribe(event => {
-            // Via this API, you get access to the raw event stream.
-            // Look for upload progress events.
-            if (event.type === HttpEventType.UploadProgress) {
-                // This is an upload progress event. Compute and show the % done:
-                const percentDone = Math.round(100 * event.loaded / event.total);
-                console.log(`File is ${percentDone}% uploaded.`);
-              } else if (event instanceof HttpResponse) {
-                console.log('File is completely uploaded!');
-              }
-            if (event.type === HttpEventType.DownloadProgress) {
-                const kbLoaded = Math.round(event.loaded / 1024);
-                console.log(`Download in progress! ${ kbLoaded }Kb loaded`);
-            }
-            if (event.type === HttpEventType.Response) {
-                console.log('Data received', event.body);
-            }
-          });
-    }
-
     // Returns the list of active surveys.
     getActiveSurveys(): Observable<any> {
         return this.http.get('https://dxsurvey.com/api/MySurveys/getActive?ownerId=' + this.ownerId + '&accessKey=' + this.accessKey).pipe(

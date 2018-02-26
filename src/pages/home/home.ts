@@ -20,15 +20,12 @@ export class HomePage {
     constructor(public navCtrl: NavController, public surveyProvider: SurveyProvider,
                 public loadingCtrl: LoadingController, public alertCtrl: AlertController) {
 
-        let loading = this.loadingCtrl.create({
-            content: "Loading Surveys..."
-        });
         this.surveys = SurveyList.create({
             activeSurveys: [],
             archiveSurveys: []
         }, {
             surveyProvider: this.surveyProvider, // inject provider to the tree.
-            loading: loading
+            loading: loadingCtrl
         });
 
         this.surveys.getSurveys();
@@ -50,9 +47,9 @@ export class HomePage {
     }
 
     presentAlert({
-        survey,
-        operation, 
-      }) {
+        survey = null,
+        operation = '', 
+      } = {}) {
         let options = this.alertConfig(operation);
         let alert = this.alertCtrl.create({
           title: options.title,
