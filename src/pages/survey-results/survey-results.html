@@ -22,7 +22,7 @@
       <button ion-fab color="danger" (click)="downloadResults()"><ion-icon name="cloud-download"></ion-icon></button>
     </ion-fab-list>
   </ion-fab>
-	<ion-card *ngIf="results?.length > 0">
+	<ion-card *ngIf="surveyResults.results?.length > 0">
 			<ion-card-header *ngIf="allowAccessResult">
 					<ion-icon name="logo-chrome" item-start></ion-icon>
 					URL pública resultados -> <a href="{{publicSurveyURL}}" target="_blank">Acceder</a>
@@ -35,17 +35,17 @@
 				Leyenda
 			</ion-card-header>
 			<ion-card-content>
-				<p *ngFor="let key of keys; let i = index"><b>P{{i + 1}}</b> {{key}}</p>
+				<p *ngFor="let key of surveyResults.getQuestions(); let i = index"><b>P{{i + 1}}</b> {{key}}</p>
 			</ion-card-content>
 		</ion-card>
-	<ion-grid>
+	<ion-grid *ngIf="surveyResults.results?.length > 0">
 		<ion-row>
 			<ion-col col-1></ion-col>
-			<ion-col col-2 *ngFor="let key of keys; let i = index">
+			<ion-col col-2 *ngFor="let key of surveyResults.getQuestions(); let i = index">
 					<b>P{{i + 1}}</b>
 			</ion-col>
 		</ion-row>
-		<ion-row *ngFor="let result of surveyResults">
+		<ion-row *ngFor="let result of surveyResults.results">
 			<ion-col col-1><ion-icon name="trash" (click)="onClickDeleteSurveyResult(result)"></ion-icon></ion-col>
 			<ion-col col-2 *ngFor="let userAnswer of result.userAnswers">
 					{{userAnswer.value}}

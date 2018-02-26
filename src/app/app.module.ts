@@ -12,7 +12,6 @@ import { SurveyResultsPage } from '../pages/survey-results/survey-results';
 
 import { SurveyComponent } from '../components/survey/survey';
 import { SurveyProvider } from '../providers/survey/survey';
-import { ApiWrapper } from '../providers/survey/api-wrapper';
 import { ChartComponent } from '../components/chart/chart';
 
 import { ChartsModalPage } from '../modals/charts-modal';
@@ -47,8 +46,7 @@ import { TimingInterceptor } from '../interceptors/timing-interceptor';
         SplashScreen,
         {provide: ErrorHandler, useClass: IonicErrorHandler},
         {provide: HTTP_INTERCEPTORS, useClass: TimingInterceptor, multi: true},
-        SurveyProvider,
-        ApiWrapper
+        SurveyProvider
     ]
 })
 export class AppModule {}

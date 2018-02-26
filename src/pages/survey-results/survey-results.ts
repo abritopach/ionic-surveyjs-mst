@@ -5,8 +5,6 @@ import { SurveyProvider } from '../../providers/survey/survey';
 
 import { ChartsModalPage } from '../../modals/charts-modal';
 
-import { SurveyResultsModel } from '../../models/survey.results.model';
-
 import { SurveyListResults } from '../../models/survey.results.mst.model';
 
 import * as papa from 'papaparse';
@@ -28,73 +26,38 @@ export class SurveyResultsPage {
 	currentYear = new Date().getFullYear();
 	survey: any;
 	allowAccessResult: boolean;
-	surveys: any;
 	keys: any;
-	charData: any;
+	chartData: any;
 	results: any;
-	surveyResults: SurveyResultsModel[] = [];
 	publicSurveyURL: string = 'https://surveyjs.io/Results/Survey/';
 
-	surveyResultsMobx : any = [];
+	surveyResults : any = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public surveyProvider: SurveyProvider,
 			  public loadingCtrl: LoadingController, public modalCtrl: ModalController, public alertCtrl: AlertController) {
 
-		this.surveys = [];
 		this.survey = this.navParams.get('survey');
 		this.publicSurveyURL += this.survey.Id; 
 		this.allowAccessResult = this.survey.allowAccessResult;
-		this.charData = [];
+		this.chartData = [];
 
-		let loading = this.loadingCtrl.create({
-            content: "Loading Survey results..."
-        });
-
-		loading.present();
-		
-		this.surveyProvider.getSurveyResults(this.survey.Id)
-		.subscribe(
-			data => {
-				this.results = JSON.parse(JSON.stringify(data.Data));
-				this.surveyResults = SurveyResultsModel.fromJSONArray(data.Data);
-				console.log(this.surveyResults);
-				if (this.results.length > 0) {
-					this.keys = this.surveyResults[0].userAnswers.map((val, key) => {return val['textQuestion']});
-					// Format Data to chart visualization.
-					for (let i = 0; i < this.keys.length; i++) this.groupResultsByQuestion(i);
-				}
-				loading.dismiss();
-			},
-			error => {
-				console.log(<any>error);
-				loading.dismiss();
-			}
-		);
-
-		this.surveyResultsMobx = SurveyListResults.create({
+		this.surveyResults = SurveyListResults.create({
 			results: []
         }, {
-            surveyProvider: this.surveyProvider // inject provider to the tree.
+			surveyProvider: this.surveyProvider, // inject provider to the tree.
+			loading: loadingCtrl,
+			chartData: this.chartData
         });
 
-        this.surveyResultsMobx.getSurveyResults(this.survey);
+        this.surveyResults.getSurveyResults(this.survey);
   }
 
   	ionViewDidLoad() {
 		//console.log('ionViewDidLoad SurveyResultsPage');
 	}
 
-	groupResultsByQuestion(index) {
-		let keys = this.keys;
-		let res = this.results.reduce(function(res, currentValue) {
-			res.push(currentValue[keys[index]]);
-			return res;
-		}, []);
-		this.charData.push(res);
-	}
-
 	openModal() {
-		let modal = this.modalCtrl.create(ChartsModalPage, {'chartData': this.charData, 'questionsText': this.keys});
+		let modal = this.modalCtrl.create(ChartsModalPage, {'chartData': this.chartData, 'questionsText': this.surveyResults.getQuestions()});
 		modal.present();
 	}
 
@@ -107,8 +70,8 @@ export class SurveyResultsPage {
 		//console.log("downloadResults");
 
 		let csv = papa.unparse({
-			fields: this.keys,
-			data: this.charData
+			fields: this.surveyResults.getQuestions(),
+			data: this.chartData
 		  });
 	   
 		  // Dummy implementation for Desktop download purpose.
@@ -145,6 +108,8 @@ export class SurveyResultsPage {
 	}
 
 	presentAlert() {
+
+		/*
 		let operation;
 		let loadingContent;
 		if (this.allowAccessResult) {
@@ -173,7 +138,8 @@ export class SurveyResultsPage {
             }
           ]
         });
-        alert.present();
+		alert.present();
+		*/
 	}
 	
 	alertConfig(operation) {
