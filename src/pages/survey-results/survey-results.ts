@@ -9,6 +9,8 @@ import { SurveyListResults } from '../../models/survey.results.mst.model';
 
 import * as papa from 'papaparse';
 
+import makeInspectable from 'mobx-devtools-mst';
+
 /**
  * Generated class for the SurveyResultsPage page.
  *
@@ -40,7 +42,10 @@ export class SurveyResultsPage {
 			surveyProvider: this.surveyProvider, // inject provider to the tree.
 			loading: loadingCtrl,
 			chartData: this.chartData
-        });
+		});
+		
+		// Allow inspecting MST root.
+		makeInspectable(this.surveyResults);
 
         this.surveyResults.getSurveyResults(this.survey);
   }

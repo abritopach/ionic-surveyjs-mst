@@ -29,22 +29,17 @@ export const SurveyListResults = types.model({
         getEnv(self).surveyProvider.getSurveyResults(survey.Id)
 		.subscribe(
 			data => {
-                let results = [];
-                data.Data.map(obj => {
-                    let result = {happendAt: obj.HappendAt, iPAddress: obj.IPAddress, userAnswers: []};
-                    let index = 1;
-                    for (let key in obj) {
-                        let value = obj[key];
-                        if ((key != "HappendAt") && (key != "IPAddress")) {
-                            let userAnswer = {idQuestion: "P" + index, textQuestion: key, value: value.toString()};
-                            result.userAnswers.push(userAnswer);
-                        }
-                    }
-                    results.push(result);
+                let results = data.Data.map(obj => {
+                    let userAnswers = Object.keys(obj).reduce((acc, currentValue, currentIndex) => {
+                        if ((currentValue != "HappendAt") && (currentValue != "IPAddress")) acc.push({idQuestion: "P" + (currentIndex + 1), textQuestion: currentValue, value: obj[currentValue].toString()});
+                        return acc;
+                    }, []);
+                    return {happendAt: obj.HappendAt, iPAddress: obj.IPAddress, userAnswers: userAnswers}
                 });
                 applySnapshot(self.results, results);
                 loading.dismiss();
                 (self as any).formatChartData(JSON.parse(JSON.stringify(data.Data)));
+
 			},
 			error => {
                 console.log(<any>error);

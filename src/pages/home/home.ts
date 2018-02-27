@@ -6,6 +6,8 @@ import { SurveyDetailsPage } from '../survey-details/survey-details';
 
 import { SurveyList } from '../../models/survey.mst.model';
 
+import makeInspectable from 'mobx-devtools-mst';
+
 @Component({
     selector: 'page-home',
     templateUrl: 'home.html'
@@ -27,6 +29,9 @@ export class HomePage {
             surveyProvider: this.surveyProvider, // inject provider to the tree.
             loading: loadingCtrl
         });
+
+        // Allow inspecting MST root.
+        makeInspectable(this.surveys);
 
         this.surveys.getSurveys();
  
