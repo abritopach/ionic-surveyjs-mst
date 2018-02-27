@@ -33,7 +33,7 @@ export class HomePage {
     }
 
     selectedSurvey(survey) {
-        console.log(survey);
+        // console.log(survey);
         this.navCtrl.push(SurveyDetailsPage, {
             survey: survey
         });

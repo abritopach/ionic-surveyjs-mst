@@ -51,6 +51,20 @@ export const SurveyListResults = types.model({
                 loading.dismiss();
 			}
 		);
+    },
+    makeSurveyResultsPublic(loadingContent, survey, allowAccessResult) {
+        const loading = presentLoading(self, loadingContent);
+        getEnv(self).surveyProvider.makeSurveyResultsPublic(survey.Id, allowAccessResult)
+		.subscribe(
+			data => {
+				// console.log(data);
+				loading.dismiss();
+			},
+			error => {
+				// console.log(<any>error);
+				loading.dismiss();
+			}
+		);
     }
 })).views(self => ({
     getQuestions() {

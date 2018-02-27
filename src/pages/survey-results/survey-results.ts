@@ -25,20 +25,13 @@ export class SurveyResultsPage {
 
 	currentYear = new Date().getFullYear();
 	survey: any;
-	allowAccessResult: boolean;
-	keys: any;
 	chartData: any;
-	results: any;
-	publicSurveyURL: string = 'https://surveyjs.io/Results/Survey/';
-
 	surveyResults : any = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public surveyProvider: SurveyProvider,
 			  public loadingCtrl: LoadingController, public modalCtrl: ModalController, public alertCtrl: AlertController) {
 
 		this.survey = this.navParams.get('survey');
-		this.publicSurveyURL += this.survey.Id; 
-		this.allowAccessResult = this.survey.allowAccessResult;
 		this.chartData = [];
 
 		this.surveyResults = SurveyListResults.create({
@@ -67,8 +60,6 @@ export class SurveyResultsPage {
 	}
 
 	downloadResults() {
-		//console.log("downloadResults");
-
 		let csv = papa.unparse({
 			fields: this.surveyResults.getQuestions(),
 			data: this.chartData
@@ -87,32 +78,15 @@ export class SurveyResultsPage {
 	}
 
 	makeSurveyResultsPublic(content) {
-		//console.log("makeSurveyResultsPublic");
-		this.allowAccessResult = !this.allowAccessResult;
-
-		let loading = this.loadingCtrl.create({
-            content: content
-        });
-		loading.present();
-		this.surveyProvider.makeSurveyResultsPublic(this.survey.Id, this.allowAccessResult)
-		.subscribe(
-			data => {
-				console.log(data);
-				loading.dismiss();
-			},
-			error => {
-				console.log(<any>error);
-				loading.dismiss();
-			}
-		);
+		this.survey.changeAllowAccessResult();
+		this.surveyResults.makeSurveyResultsPublic(content, this.survey, this.survey.AllowAccessResult);
 	}
 
 	presentAlert() {
 
-		/*
 		let operation;
 		let loadingContent;
-		if (this.allowAccessResult) {
+		if (this.survey.AllowAccessResult) {
 			operation = "disable";
 			loadingContent = "Making Survey results not public..."
 		} 
@@ -139,7 +113,6 @@ export class SurveyResultsPage {
           ]
         });
 		alert.present();
-		*/
 	}
 	
 	alertConfig(operation) {

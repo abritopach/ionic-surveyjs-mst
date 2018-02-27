@@ -33,8 +33,15 @@ export const Survey = types.model({
     changeName(newName) {
         self.Name = newName;
     },
+    changeAllowAccessResult() {
+        self.AllowAccessResult = !self.AllowAccessResult;
+    },
     remove() {
         getParent(self, 2).remove(self);
+    }
+})).views(self => ({
+    publicSurveyURL() {
+        return 'https://surveyjs.io/Results/Survey/' + self.Id;
     }
 }));
 
