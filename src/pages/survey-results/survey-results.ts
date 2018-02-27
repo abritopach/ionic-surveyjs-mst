@@ -34,14 +34,12 @@ export class SurveyResultsPage {
 			  public loadingCtrl: LoadingController, public modalCtrl: ModalController, public alertCtrl: AlertController) {
 
 		this.survey = this.navParams.get('survey');
-		this.chartData = [];
 
 		this.surveyResults = SurveyListResults.create({
 			results: []
         }, {
 			surveyProvider: this.surveyProvider, // inject provider to the tree.
-			loading: loadingCtrl,
-			chartData: this.chartData
+			loading: loadingCtrl
 		});
 		
 		// Allow inspecting MST root.
@@ -55,7 +53,7 @@ export class SurveyResultsPage {
 	}
 
 	openModal() {
-		let modal = this.modalCtrl.create(ChartsModalPage, {'chartData': this.chartData, 'questionsText': this.surveyResults.getQuestions()});
+		let modal = this.modalCtrl.create(ChartsModalPage, {'chartData': this.surveyResults.formatChartData(), 'questionsText': this.surveyResults.getQuestions()});
 		modal.present();
 	}
 
@@ -67,7 +65,7 @@ export class SurveyResultsPage {
 	downloadResults() {
 		let csv = papa.unparse({
 			fields: this.surveyResults.getQuestions(),
-			data: this.chartData
+			data: this.surveyResults.formatChartData()
 		  });
 	   
 		  // Dummy implementation for Desktop download purpose.

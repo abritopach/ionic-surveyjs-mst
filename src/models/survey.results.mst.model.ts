@@ -38,8 +38,6 @@ export const SurveyListResults = types.model({
                 });
                 applySnapshot(self.results, results);
                 loading.dismiss();
-                (self as any).formatChartData(JSON.parse(JSON.stringify(data.Data)));
-
 			},
 			error => {
                 console.log(<any>error);
@@ -65,16 +63,23 @@ export const SurveyListResults = types.model({
     getQuestions() {
         return self.results[0].userAnswers.map((val, key) => {return val['textQuestion']})
     },
-    formatChartData(chartData) {
-        let keys = (self as any).getQuestions();
-        for (let i = 0; i < keys.length; i++) {
-            let res = chartData.reduce((res, currentValue) => {
-                res.push(currentValue[keys[i]]);
-                return res;
-            }, []);
-            // console.log(res);
-            getEnv(self).chartData.push(res);
-        }
+    formatChartData() {
+        const results = self.results;
+        let userAnswers = [];
+        // Concatenate all user's answers.
+        results.map(result => { 
+            userAnswers.push(...result.userAnswers)
+        });
+
+        // Group by answers by question.
+        let data = userAnswers.reduce(function(rv, x) {
+            (rv[x['idQuestion']] = rv[x['idQuestion']] || []).push(x.value);
+            return rv;
+            }, {});
+        
+        const chartData = Object.keys(data).map(i => data[i]);
+
+        return chartData;
     }
 }));
 
