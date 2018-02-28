@@ -4,6 +4,8 @@ Sample project that shows how to integrate SurveyJS in Ionic APP and how to mana
 
 Technologies: Mobx-state-tree, Mobx, Mobx-angular, SurveyJS, Typescript, Ionic.
 
+![Technologies](readme_resources/ionic_survey_mst.png "Technologies")
+
 This project shows you how to:
 
     * Integrate SurveyJS in Ionic APP.
