@@ -56,7 +56,7 @@ const presentLoading = (self, message) => {
 export const SurveyList = types.model({
     activeSurveys: types.optional(types.array(Survey), []),
     archiveSurveys: types.optional(types.array(Survey), [])
-}).actions(self => ({
+}).actions((self: typeof SurveyList.Type) => ({
     getSurveys() {
 
         const loading = presentLoading(self, 'Loading Surveys...');
@@ -93,7 +93,7 @@ export const SurveyList = types.model({
             data => {
                 //console.log(data);
                 let survey = Survey.create(data);
-                (self as any).addActive(survey);
+                self.addActive(survey);
                 loading.dismiss();
             },
             error => {
@@ -117,7 +117,7 @@ export const SurveyList = types.model({
                 // API ERROR: Get status:200 with HttpErrorResponse.
                 console.log(<any>error);
                 if (error.status == 200) {
-                    (survey as any).remove();
+                    survey.remove();
                 }
                 loading.dismiss();
             }
@@ -135,8 +135,8 @@ export const SurveyList = types.model({
                 console.log(<any>error);
                 if (error.status == 200) {
                     let copy = clone(survey);
-                    (survey as any).remove();
-                    (self as any).addActive(copy);
+                    survey.remove();
+                    self.addActive(copy);
                 }
                 loading.dismiss();
             }
@@ -154,8 +154,8 @@ export const SurveyList = types.model({
                 console.log(<any>error);
                 if (error.status == 200) {
                     let copy = clone(survey);
-                    (survey as any).remove();
-                    (self as any).addArchive(copy);
+                    survey.remove();
+                    self.addArchive(copy);
                 }
                 loading.dismiss();
             }
@@ -168,13 +168,13 @@ export const SurveyList = types.model({
             data => {
                 console.log(data);
                 loading.dismiss();
-                (survey as any).changeName(newName);
+                survey.changeName(newName);
                 // Close sliding item.
                 survey.close();
             },
             error => {
                 console.log(<any>error);
-                if (error.status == 200) (survey as any).changeName(newName);;
+                if (error.status == 200) survey.changeName(newName);
                 loading.dismiss();
             }
         );
